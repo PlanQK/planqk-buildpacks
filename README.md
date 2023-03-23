@@ -20,8 +20,8 @@ To read more, see Cloud Native Buildpacks project
 
 For those new to buildpacks, these concepts are good starting points:
 
-* **[Builder](https://buildpacks.io/docs/concepts/components/builder)** A container image that contains buildpacks and detection order in which builds are executed.
-* **[Buildpack](https://buildpacks.io/docs/concepts/components/buildpack)** An executable that "inspects your app source code and formulates a plan to build and run your application".
-* **Buildpack Group** Several buildpacks which together provide support for a
+* **[Builder](https://buildpacks.io/docs/concepts/components/builder)**: A container image that contains buildpacks and detection order in which builds are executed.
+* **[Buildpack](https://buildpacks.io/docs/concepts/components/buildpack)**: An executable that "inspects your app source code and formulates a plan to build and run your application".
+* **Buildpack Group**: Several buildpacks which together provide support for a
 specific language or framework.
-* **[Run Image](https://buildpacks.io/docs/concepts/components/stack)** The container image that serves as the base for the built application.
+* **[Run Image](https://buildpacks.io/docs/concepts/components/stack)**: The container image that serves as the base for the built application.

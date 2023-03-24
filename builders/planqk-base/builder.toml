@@ -1,0 +1,18 @@
+description = "Ubuntu 22.04 base image with buildpacks for Python and the PlanQK Platform"
+
+
+[[buildpacks]]
+uri = "docker://gcr.io/paketo-buildpacks/python:2.9.0"
+version = "2.9.0"
+
+
+[[order]]
+[[order.group]]
+id = "paketo-buildpacks/python"
+
+
+[stack]
+id = "io.buildpacks.stacks.jammy"
+build-image = "docker.io/paketobuildpacks/build-jammy-full"
+run-image = "index.docker.io/paketobuildpacks/run-jammy-full"
+run-image-mirrors = []

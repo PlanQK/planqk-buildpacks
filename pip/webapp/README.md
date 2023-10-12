@@ -2,12 +2,12 @@
 
 ## Building
 
-`pack build conda-sample --buildpack paketo-buildpacks/python`
+`pack build testcase --paketobuildpacks/builder-jammy-full`
 
 ## Running
 
-`docker run --interactive --tty --env PORT=8080 --publish 8080:8080 conda-sample`
+`docker run -p 8080:8080 testcase`
 
 ## Viewing
 
-`curl http://localhost:8080`
+

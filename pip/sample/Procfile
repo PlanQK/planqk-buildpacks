@@ -1,0 +1,1 @@
+web: python -c "from sample import run; run()"

@@ -1,13 +1,14 @@
 import os
+import sys
 
-def main():
-    print("It shall run")
+from flask import Flask, render_template
 
-    name = os.environ.get("NAME")
-    if name:
-        print(f"Hello, {name}!")
-    else:
-        print("Name wurde nicht übergeben")
+app = Flask(__name__)
 
-if __name__ == "__main__":
-    main()
+@app.route('/')
+def root():
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    port = int(os.getenv("PORT", 8080))
+    app.run(host='0.0.0.0', port=port, debug=True)

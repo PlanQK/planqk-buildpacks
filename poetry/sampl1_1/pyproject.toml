@@ -1,0 +1,66 @@
+[tool.poetry]
+name = "flask_simplelogin"
+version = "0.1.2"
+description = "Flask Simple Login - Login Extension for Flask"
+authors = ["Bruno Rocha <rochacbruno@users.noreply.github.com>"]
+maintainers = ["Eduardo Cuducos <cuducos@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/flask-extensions/Flask-SimpleLogin"
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Framework :: Flask",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+click = "^8.0.1"
+Flask = ">=0.12"
+Flask-WTF = ">1.1"
+WTForms = ">=2.1"
+recommonmark = { version = "^0.7.1", optional = true }
+Sphinx = { version = "^4.1.2", optional = true }
+sphinx-markdown-tables = { version = "^0.0.15", optional = true }
+sphinx-rtd-theme = { version = "^0.5.2", optional = true }
+markdown = { version = "<3.4", optional = true }
+
+[tool.poetry.group.dev.dependencies]
+ipdb = "^0.13.9"
+pytest = "^7.3.1"
+pytest-black = "^0.3.12"
+pytest-cov = "^2.12.1"
+pytest-flask = "^1.2.0"
+pytest-mock = "^3.6.1"
+pytest-ruff = "^0.0.6"
+tox = "^3.24.2"
+
+[tool.poetry.extras]
+docs = ["markdown", "pip", "recommonmark", "Sphinx", "sphinx-markdown-tables", "sphinx-rtd-theme"]
+
+[tool.pytest.ini_options]
+addopts = "--ruff --black --cov flask_simplelogin --cov-report term --cov-fail-under=70"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = true
+envlist = py311, py310, py39, py38
+
+[testenv]
+whitelist_externals = poetry
+commands =
+    poetry install -v
+    poetry run pytest
+"""
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

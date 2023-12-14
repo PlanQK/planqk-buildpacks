@@ -1,6 +1,7 @@
 ## Development and Prerequisites
 
 * since we're using paketo buildpacks, the pack CLI is required
+* [High level what happens](https://stackoverflow.com/questions/70990289/are-cloud-native-buildpacks-just-an-automatic-way-to-perform-a-multi-stage-conta/71001310#71001310)
 * **[pack CLI](https://buildpacks.io/docs/tools/pack/)**: Windows users might use Scoop for installation  
 * create a builder
 * * in a builder.toml all buildpacks and stacks neccessary for the builder must be defined.

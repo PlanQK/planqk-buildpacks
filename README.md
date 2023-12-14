@@ -20,15 +20,90 @@ To read more, see Cloud Native Buildpacks project
 
 For those new to buildpacks, these concepts are good starting points:
 
+* **[Very quick Overview](https://stackoverflow.com/questions/70990289/are-cloud-native-buildpacks-just-an-automatic-way-to-perform-a-multi-stage-conta/71001310#71001310)**: There are a few concepts to keep in mind
 * **[Builder](https://buildpacks.io/docs/concepts/components/builder)**: A container image that contains buildpacks and detection order in which builds are executed.
 * **[Buildpack](https://buildpacks.io/docs/concepts/components/buildpack)**: An executable that "inspects your app source code and formulates a plan to build and run your application".
 * **Buildpack Group**: Several buildpacks which together provide support for a
 specific language or framework.
 * **[Run Image](https://buildpacks.io/docs/concepts/components/stack)**: The container image that serves as the base for the built application.
 
+
+## Development time 
+
+*since we're using paketo buildpacks, the pack CLI is required
+* **[pack CLI](https://buildpacks.io/docs/tools/pack/)**: Windows users might use Scoop for installation  
+* Job_template_wrapper:  There must be a "job template" wrapper on the server that records the user code  
+This wrapper must run very securely  
+* a script must be written to enable the processes described in the runtime  
+```bash
+
+# Directory of the Usercode
+USERCODE_DIR="/path/to/usercode"
+
+# Directory for the Wrapper output
+OUTPUT_DIR="/path/to/output"
+
+# Name of the Docker Image
+DOCKER_IMAGE_NAME="my_wrapper_image"
+
+# Destination directory for the Usercode in the Wrapper
+USERCODE_DESTINATION="$OUTPUT_DIR/app/user_code"
+
+# Step 1: Copy the Wrapper code
+cp -r ./wrapper/* $OUTPUT_DIR/
+
+# Step 2: Create the directory for the Usercode in the Wrapper destination
+mkdir -p $USERCODE_DESTINATION
+
+# Step 3: Copy the specific Usercode to the Wrapper destination
+cp -r $USERCODE_DIR/* $USERCODE_DESTINATION/
+
+# Step 4: Change to the output directory
+cd $OUTPUT_DIR
+
+# Step 5: Optional - Perform specific configuration steps
+# You can add more configurations, set environment variables, etc. here.
+
+# Step 6: Use pack to build the Docker Image
+pack build $DOCKER_IMAGE_NAME --builder <YOUR_BUILDER>
+
+# Step 7: Optional - Publish the Docker Image (e.g., on Docker Hub)
+# pack push $DOCKER_IMAGE_NAME
+
+# Step 8: Optional - Start the container (if necessary)
+# docker run -d $DOCKER_IMAGE_NAME
+
+# Step 9: Optional - Clean up temporary files if needed
+# rm -rf $OUTPUT_DIR
+
+echo "Wrapper script completed!"
+```
+
+## run time 
+
+First, the user code must be combined with the wrapper  
+saving the result as a combined wrapper
+this "combined" wrapper can then be built into an image using the pack command  
+after creating the image, the combined wrapper must be deleted again
+* Docker run:
+```bash
+PROJECT_ROOT=(`pwd`) 
+docker run -it \
+  -e BASE64_ENCODED=false \
+  -v $PROJECT_ROOT/user-code-template/input/data.json:/var/input/data/data.json \
+  -v $PROJECT_ROOT/user-code-template/input/params.json:/var/input/params/params.json \
+```
+docker image and container should be removed afterward
+
+planqk 
+
+## what should the cluster do
+
+* tbh I have no clue yet
+
 ## What you need to do
 
-* A Procfile with the following minimum text:
+* A Procfile with the following minimum text: web: python (your_python_app.py)
 
 This project supports several Python package services. PIP, miniconda and Poetry.
 

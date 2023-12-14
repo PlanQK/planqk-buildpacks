@@ -1,6 +1,6 @@
-## Development time 
+## Development and Prerequisites
 
-*since we're using paketo buildpacks, the pack CLI is required
+* since we're using paketo buildpacks, the pack CLI is required
 * **[pack CLI](https://buildpacks.io/docs/tools/pack/)**: Windows users might use Scoop for installation  
 * create a builder
 * * in a builder.toml all buildpacks and stacks neccessary for the builder must be defined.
@@ -60,12 +60,18 @@ pack build $DOCKER_IMAGE_NAME --builder <YOUR_BUILDER>
 echo "Wrapper script completed!"
 ```
 
-## run time 
+## PlanQK Platform
 
-First, the user code must be combined with the wrapper  
-saving the result as a combined wrapper
-this "combined" wrapper can then be built into an image using the pack command  
-after creating the image, the combined wrapper must be deleted again
+
+
+
+## Kubernetes (Docker Runtime)
+
+
++ First, the user code must be combined with the wrapper  
++ saving the result as a combined wrapper
++ this "combined" wrapper can then be built into an OCI image using the pack build command  
++ after creating the image, the combined wrapper must be deleted again
 * Docker run:
 ```bash
 PROJECT_ROOT=(`pwd`) 
@@ -75,9 +81,3 @@ docker run -it \
   -v $PROJECT_ROOT/user-code-template/input/params.json:/var/input/params/params.json \
 ```
 docker image and container should be removed afterward
-
-planqk 
-
-## what should the cluster do
-
-* tbh I have no clue yet

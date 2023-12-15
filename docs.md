@@ -13,7 +13,7 @@
 * create a builder
   * in a builder.toml all buildpacks and stacks neccessary for the builder must be defined.
   * [builder.toml docs](https://buildpacks.io/docs/reference/config/builder-config/)
-  * navigate to the target folder containing the buildpack.toml
+  * navigate to the target folder containing the buildpack.toml ./planqk-base
   *make sure docker engine is running
   *  run the pack builder create command to create a builder 
   ```bash 

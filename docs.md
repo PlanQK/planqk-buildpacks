@@ -11,19 +11,24 @@
 * since we're using paketo buildpacks, the pack CLI is required
 * **[pack CLI](https://buildpacks.io/docs/tools/pack/)**: Windows users might use Scoop for installation  
 * create a builder
-* * in a builder.toml all buildpacks and stacks neccessary for the builder must be defined.
-* * [builder.toml docs](https://buildpacks.io/docs/reference/config/builder-config/)
-* * navigate to the target folder containing the buildpack.toml
-* * run the pack build command to create a builder 
-```bash 
-pack builder create planqk-base-builder --config .\builder.toml
-```
-* * now you have an OCI image pack could use as builder 
-```bash 
-pack build test_img --path apps/test-app --builder planqk-base-builder
-```
+  * in a builder.toml all buildpacks and stacks neccessary for the builder must be defined.
+  * [builder.toml docs](https://buildpacks.io/docs/reference/config/builder-config/)
+  * navigate to the target folder containing the buildpack.toml
+  *  run the pack builder create command to create a builder 
+  ```bash 
+  pack builder create planqk-base-builder --config .\builder.toml
+  ```
+  * now you have an OCI image pack could use as builder 
+  ```bash 
+  pack build test_img --path apps/test-app --builder planqk-base-builder
+  ```
 * create the base image that starts the user code. hereinafter referred to asls wrapper 
-* 
+* the wrapper must contain a Procfile
+  * Procfile takes key value pairs
+  * it must contain the following line
+  ```bash
+  web : python -m app.py
+  ```
 
 
 
@@ -31,19 +36,18 @@ pack build test_img --path apps/test-app --builder planqk-base-builder
 ## PlanQK Platform
 
 * the user code must be combined with the wrapper
-* * Das ist die location die ich habe, eine andere hab ich nicht. also das Repo für die echten tests
-* * [wrapper location:](https://gitlab.com/StoneOne/planqk/serverless-template/-/tree/main/job-template?ref_type=heads)
-* * User code must copied to following path:
+  *[wrapper location:](https://gitlab.com/StoneOne/planqk/serverless-template/-/tree/main/job-template?ref_type=heads)
+  * User code must copied to following path:
 
- ```bash
-\serverless-template\job-template\app
-``` 
-* *  saving the result as a combined wrapper
-+ this "combined" wrapper can then be built into an OCI image using the pack build command
-```bash
-pack build user-job --builder planqk-base-builder
-```
-+ after creating the image, the combined wrapper must be deleted again
+  ```bash
+  \serverless-template\job-template\app
+  ``` 
+  *  saving the result as a combined wrapper
+  * this "combined" wrapper can then be built into an OCI image using the pack build command
+  ```bash
+  pack build user-job --builder planqk-base-builder
+  ```
+* after creating the image, the combined wrapper must be deleted again
 
 
 ## Kubernetes (Docker Runtime)

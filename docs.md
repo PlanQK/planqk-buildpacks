@@ -9,12 +9,12 @@
 ## Development and Prerequisites
 
 * since we're using paketo buildpacks, the pack CLI is required
-* **[pack CLI](https://buildpacks.io/docs/tools/pack/)**: Windows users might use Scoop for installation  
+* **[pack CLI](https://buildpacks.io/docs/tools/pack/)**:   
 * create a builder
   * in a builder.toml all buildpacks and stacks neccessary for the builder must be defined.
   * [builder.toml docs](https://buildpacks.io/docs/reference/config/builder-config/)
   * navigate to the target folder containing the buildpack.toml ./planqk-base
-  *make sure docker engine is running
+  * make sure docker engine is running
   *  run the pack builder create command to create a builder 
   ```bash 
   pack builder create planqk-base-builder --config .\builder.toml
@@ -46,7 +46,7 @@
   * User code must copied to following path:
 
   ```bash
-  \serverless-template\job-template\app
+  \serverless-template\job-template\app\user_code
   ``` 
   *  saving the result as a combined wrapper
   * this "combined" wrapper can then be built into an OCI image using the pack build command from the job-template level

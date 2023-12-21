@@ -24,6 +24,7 @@ serverless-template/
 ├── job-template/
 │   ├── app/
 │   │    ├──user-code
+│   │    └──...
 │   ├── tests/
 │   └── ...
 ├── dockerfile-template/
@@ -48,13 +49,39 @@ However, the use of buildpacks results in changes. The requirements were previou
 
 # Creating and using a Python builder - an example
 
-Cloud native buildpacks provide their own CLI. This can be obtained from their website (insert link).  
-The pack CLI, the planqk CLI  and Docker are required for the example process. 
+Cloud native buildpacks provide their own CLI. This can be obtained from their website: [pack CLI](https://buildpacks.io/docs/tools/pack/#install).  
+The pack CLI and Docker are required for the example process. 
 
- * create the builder
- * use the builder on the test image to test the image
- * docker run befehl
- * go to local host
+More information can be read on the [website](https://buildpacks.io/docs/concepts/) from CLoud Native Buildpacks.
+
+To build a builder, the Docker engine must be running. 
+
+```bash
+
+git clone https://github.com/PlanQK/planqk-buildpacks
+cd planqk-buildpacks\planqk-base
+pack builder create planqk-base-builder --config .\builder.toml
+
+```
+A Python builder has now been created.  
+There is a test app to test whether the builder works. 
+
+```bash
+
+cd..
+cd conda/sample
+pack build my_testapp --builder planqk-base-builder
+
+```
+The builder has built an OCI image from the app. Docker is required to start it. 
+
+```bash
+
+ docker run -it -e PORT=8080 -p 8080:8080 my_testapp
+
+```
+Localhost:8080 can now be opened in the browser.
+
 
 
 

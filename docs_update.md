@@ -2,42 +2,73 @@
 
 Status qou was that:
 
-users of the platform can have their projects processed as Docker images. This currently requires a Conda environment and an environment.yml as well as a Dockerfile. To enable more flexibility, pip and poetry will also be supported. In addition, the process can be serialized and simplified with buildpacks. The users then no longer need a docker file and can continue to use their resources for our platform. With the buildpacks, we can set up the platform more broadly. They are variable and can be extended to languages other than Python if required. They reduce barriers and enable faster and direct access to quantum computing without having to deal with Docker.
-
-## How to build a buildpack
-
-A builder.toml is required to create a buildpack. All information required for the necessary buildpacks must be in the correct order in the .toml.  A buildpack image is then generated from this. [builder.toml docs](https://buildpacks.io/docs/reference/config/builder-config/) With the cli (pack) provided by Cloud Native, the buildpack can then be created from this .toml. 
-This builder image then generates OCI images from an app template. At the moment the Python and the Procfile buildpack from Paketo are used for the necessary requirements. A profile is required to be able to determine the container's entry point in the future.  
-* The Procfile is always a simple text file that is named Procfile without a file extension. For example, Procfile. txt is not valid. The Procfile must live in your app's root directory.
+users of the platform can have their projects processed as Docker images.
+This currently requires a Conda environment and an environment.yml as well as a Dockerfile.
+To enable more flexibility, pip and poetry will also be supported. In addition, the process can be serialized and simplified with buildpacks.
+The users then no longer need a docker file and can continue to use their resources for our platform. With the buildpacks, we can set up the platform more broadly.
+They are variable and can be extended to languages other than Python if required.
 
 
-# Process flow 
+## How to build a Builder
 
-All the user has to do is upload a zip file with their code to the platform. The rest happens in the background for the user. 
+A builder.toml is required to create a Builder. All information required for the necessary buildpacks must be in the correct order in the .toml.
+A buildpack image is then generated from this. [builder.toml docs](https://buildpacks.io/docs/reference/config/builder-config/) 
 
-To execute a user job, the project is copied into a serverless template. The template contains a run method and all necessary implementations to process the data of the job. This run method calls the user code. This is necessary to create as few barriers as possible for the user and to minimize sources of error.  
+With the cli (pack) provided by Cloud Native, the buildpack can then be created from this .toml.  konkretisieren
 
 
+This builder image then generates OCI images from an app template.
+At the moment the Python and the Procfile buildpack from Paketo are used for the necessary requirements.
+A profile is required to be able to determine the container's entry point in the future. 
+
+
+## Development and Prerequisites
+
+In the first instance, the team opted for the pack CLI as a tool. 
+To create a builder, a builder.toml must be created.
+[builder.toml docs](https://buildpacks.io/docs/reference/config/builder-config/)
+The builpacks to be used are written in the .toml. 
+First, the Python and Procfile buildpacks from Paketo Buildpacks are used.
+With this setup all Python projects can be converted into docker images. 
+To execute a user job, the project is copied into a serverless template.
+The template contains a run method and all necessary implementations to process the data of the job.
+This run method calls the user code. This is necessary to create as few barriers as possible for the user and to minimize sources of error.  
 
 ```bash
-serverless-template/
-├── job-template/
-│   ├── app/
-│   │    ├──user-code
-│   │    └──...
-│   ├── tests/
-│   └── ...
-├── dockerfile-template/
-│   │   └── ...
-└── ...
-
+ job-template/
+  ├── app/
+  │    ├──user-code
+  │    └──...
+  ├── tests/
+  └── ...
  ```
-The build process of the buildpack then starts at the level of the job-template directory. This directory then becomes the first app level in the docker image. The files for the requirements must be saved in this directory. The required profile is also saved in this location. As already mentioned, the user code must be implemented as a directory with the name user_code in the app directory.
 
-was passiert danach 
+In the previous setup, the requirements are stored in the user code directory.
+In future, these must be saved in the app directory.
+The builder searches the app directory for all requirements to determine the environment of the container.
+During local testing and implementation, I added them manually.
 
+## PlanQK Platform
 
-However, the use of buildpacks results in changes. The requirements were previously stored in the user-code directory. These must now be saved at the job-template directory. Instead of the Dockerfile, a Procfile is now required to start the app. When building the container, the docker engine only looks at the root directory of the image for necessary environmental conditions. Procfile and all requirements must be saved here. It is no longer possible to have a requirements.txt and an environment.yml in the same directory.  This is because the buildpack will always use pip first. If a conda environment is desired, no requirements.txt must be present. 
+The requirements must be copied from the user code directory to the app directory.
+It must be tested that there is only one requirements.txt or one environment.yml.
+The Python buildpack will always recognize a Pip environment if it finds a requirements.txt.
+At the end, the docker image and the container should be deleted again. 
+If a Docker -prune is planned, the builder must be created again afterwards. 
+The builder itself is also available as a docker image.
+
+## Kubernetes (Docker Runtime)
+
+However, the use of buildpacks results in changes. The requirements were previously stored in the user-code directory. 
+These must now be saved at the job-template directory. 
+Instead of the Dockerfile, a Procfile is now required to start the app.
+ When building the container, 
+
+the docker engine only
+
+ looks at the root directory of the image for necessary environmental conditions. Procfile and all requirements must be saved here. It is no longer possible to have a requirements.txt and an environment.yml in the same directory.  
+ This is because the buildpack will always use pip first. 
+ If a conda environment is desired, no requirements.txt must be present. 
 
 
 
@@ -62,7 +93,6 @@ A Python builder has now been created.
 There is a test app to test whether the builder works. 
 
 ```bash
-
 cd..
 cd conda/sample
 pack build my_testapp --builder planqk-base-builder
@@ -71,9 +101,7 @@ pack build my_testapp --builder planqk-base-builder
 The builder has built an OCI image from the app. Docker is required to start it. 
 
 ```bash
-
  docker run -it -e PORT=8080 -p 8080:8080 my_testapp
-
 ```
 Localhost:8080 can now be opened in the browser.
 

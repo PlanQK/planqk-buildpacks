@@ -8,7 +8,7 @@
 
 ## Development and Prerequisites
 
-* since we're using paketo buildpacks, the pack CLI is required
+* since we're using paketo buildpacks, the pack CLI is required <-- falsch
 * **[pack CLI](https://buildpacks.io/docs/tools/pack/)**:   
 * create a builder
   * in a builder.toml all buildpacks and stacks neccessary for the builder must be defined.

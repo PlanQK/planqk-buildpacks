@@ -41,6 +41,14 @@
 
 ## PlanQK Platform
 
+
+The requirements must be copied from the user code directory to the job-template directory.
+It must be tested that there is only one requirements.txt or one environment.yml.
+The Python buildpack will always recognize a Pip environment if it finds a requirements.txt.
+At the end, the docker image and the container should be deleted again. 
+If a Docker -prune is planned, the Builder must be created again afterwards. 
+The Builder itself is also available as a docker image.
+
 * the user code must be combined with the wrapper
   *[wrapper location:](https://gitlab.com/StoneOne/planqk/serverless-template/-/tree/main/job-template?ref_type=heads)
   * User code must copied to following path:

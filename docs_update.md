@@ -4,71 +4,69 @@ Status qou was that:
 
 users of the platform can have their projects processed as Docker images.
 This currently requires a Conda environment and an environment.yml as well as a Dockerfile.
-To enable more flexibility, pip and poetry will also be supported. In addition, the process can be serialized and simplified with buildpacks.
-The users then no longer need a docker file and can continue to use their resources for our platform. With the buildpacks, we can set up the platform more broadly.
+To enable more flexibility, pip and poetry will also be supported.
+In addition, the process can be serialized and simplified with Buildpacks.
+With the Buildpacks, we can set up the platform more broadly.
 They are variable and can be extended to languages other than Python if required.
-
-
-## How to build a Builder
-
-A builder.toml is required to create a Builder. All information required for the necessary buildpacks must be in the correct order in the .toml.
-A buildpack image is then generated from this. [builder.toml docs](https://buildpacks.io/docs/reference/config/builder-config/) 
-
-With the cli (pack) provided by Cloud Native, the buildpack can then be created from this .toml.  konkretisieren
-
-
-This builder image then generates OCI images from an app template.
-At the moment the Python and the Procfile buildpack from Paketo are used for the necessary requirements.
-A profile is required to be able to determine the container's entry point in the future. 
-
+For more information about Buildpacks go to [Buildpacks website](https://buildpacks.io/).
 
 ## Development and Prerequisites
 
 In the first instance, the team opted for the pack CLI as a tool. 
-To create a builder, a builder.toml must be created.
-[builder.toml docs](https://buildpacks.io/docs/reference/config/builder-config/)
-The builpacks to be used are written in the .toml. 
-First, the Python and Procfile buildpacks from Paketo Buildpacks are used.
-With this setup all Python projects can be converted into docker images. 
-To execute a user job, the project is copied into a serverless template.
+To create a Builder, a builder.toml must be created.
+You can watch [builder.toml docs](https://buildpacks.io/docs/reference/config/builder-config/) for more information.
+The Builpacks to be used are written in the builder.toml. 
+First, the Python and Procfile Buildpacks from Paketo Buildpacks are used.
+The procfile is a way of defining the entry point for the application.
+At the moment this should always be the app directory.
+An example of how to create a Builder and how to use it follows below.
+With this setup all Python projects can be converted into docker images.
+The procfile has been added to the job-template directory.
+To execute a job/service, the user code is copied into a template directory.
 The template contains a run method and all necessary implementations to process the data of the job.
 This run method calls the user code. This is necessary to create as few barriers as possible for the user and to minimize sources of error.  
 
 ```bash
  job-template/
   ├── app/
-  │    ├──user-code
+  │    ├──user_code
   │    └──...
   ├── tests/
   └── ...
  ```
 
 In the previous setup, the requirements are stored in the user code directory.
-In future, these must be saved in the app directory.
-The builder searches the app directory for all requirements to determine the environment of the container.
+In future, these must be saved in the job-template directory.
+The Builder searches the app directory for all requirements to determine the environment of the container.
 During local testing and implementation, I added them manually.
+With this first prototype I was able to run services from [qAI directory](https://gitlab.com/StoneOne/planqk/qai) and planqk-init locally.
 
 ## PlanQK Platform
 
-The requirements must be copied from the user code directory to the app directory.
-It must be tested that there is only one requirements.txt or one environment.yml.
-The Python buildpack will always recognize a Pip environment if it finds a requirements.txt.
-At the end, the docker image and the container should be deleted again. 
-If a Docker -prune is planned, the builder must be created again afterwards. 
-The builder itself is also available as a docker image.
+The platform offers the possibility to upload the user code as a zip file.
 
 ## Kubernetes (Docker Runtime)
 
-However, the use of buildpacks results in changes. The requirements were previously stored in the user-code directory. 
+The Builder image must be saved as a persistent volume.
+This ensures that pods are fail-safe.
+
+Run the Docker container
+* Docker run:
+```bash
+PROJECT_ROOT=(`pwd`) 
+docker run -it \
+  -e BASE64_ENCODED=false \
+  -v $PROJECT_ROOT/user-code-template/input/data.json:/var/input/data/data.json \
+  -v $PROJECT_ROOT/user-code-template/input/params.json:/var/input/params/params.json \
+```
+
+
+## What's still in progress
+However, the use of buildpacks results in changes. The requirements were previously stored in the user _code directory. 
 These must now be saved at the job-template directory. 
-Instead of the Dockerfile, a Procfile is now required to start the app.
- When building the container, 
-
-the docker engine only
-
- looks at the root directory of the image for necessary environmental conditions. Procfile and all requirements must be saved here. It is no longer possible to have a requirements.txt and an environment.yml in the same directory.  
- This is because the buildpack will always use pip first. 
- If a conda environment is desired, no requirements.txt must be present. 
+It is no longer possible to have a requirements.txt and an environment.yml in the same directory.  
+This is because the buildpack will always use pip first. 
+If a conda environment is desired, no requirements.txt must be present. 
 
 
 
@@ -122,20 +120,13 @@ cd..
 The current directory should now be the job-template directory
 
 ```bash
-cp app/user-code/requirements.txt .
-touch Procfile
-nano Procfile
-web: python -m app
-'Crtl + 0'
-'Crtl + X'
+cp app/user_code/requirements.txt .
 ```
 
 windows user follow the following commands
 
 ```bash
-copy app\user-code\requirements.txt .
-echo web: python -m app > Procfile
-notepad Procfile
+copy app\user_code\requirements.txt .
 ```
 
 There must only be a requirements.txt OR an environment.yml in the directory. If present, the environment.yml must be deleted. The docker engine must also be running.
@@ -163,9 +154,6 @@ To use the [`data.json`](input/data.json) and [`params.json`](input/params.json)
 ```bash 
 cd app
 cd user_code
-```
-
-```bash
 PROJECT_ROOT=(`pwd`) 
 docker run -it \
   -e BASE64_ENCODED=false \

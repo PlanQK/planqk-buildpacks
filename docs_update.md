@@ -30,7 +30,7 @@ This run method calls the user code. This is necessary to create as few barriers
  job-template/
   ├── app/
   │    ├──user_code
-  │    └──...
+  │    └──requirements.txt
   ├── tests/
   └── ...
  ```

@@ -26,3 +26,24 @@ apt-get install -y git
 git clone https://gitlab.com/StoneOne/planqk/serverless-template "$serverless_template_layer"
 
 cd "$serverless_template_layer"
+
+
+# copying the code into the directory is suspended for local testing.
+# kopiere den user_code in das directory
+# gehe in das user_code directory
+cd user_code
+
+#!/bin/bash
+
+if [[ -f "requirements.txt" ]]; then
+  echo "Installing Python packages from requirements.txt..."
+  pip install -r requirements.txt
+else
+  echo "No requirements.txt found."
+fi
+
+# pip install
+# setzte Entrypoint ENTRY_POINT=src.program:run
+ENTRY_POINT=src.program:run
+# setzte PYTHONPATH=../job-template python3 -m app
+PYTHONPATH=../job-template python3 -m app

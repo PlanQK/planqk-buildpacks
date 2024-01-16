@@ -1,0 +1,19 @@
+#!usr/bin/env bash
+
+# Detect script for planqk specific Buildpack
+# Autuhor: Robert Brennenstuhl
+# Version 0.1
+# Created 16.01.2024
+
+set -eo pipefail
+
+# Check if planqk.json = true
+
+if [ -f "planqk.json"]; then
+    echo "planqk.json found" 
+    exit 0
+else
+    echo "no planqk.json found"
+    exit 1 
+fi
+

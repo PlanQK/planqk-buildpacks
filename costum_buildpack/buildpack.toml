@@ -1,0 +1,9 @@
+api = "0.8"
+
+[buildpack]
+    id = "PlanQK_costum_Buildpack"
+    version = "0.0.1"
+
+[[targets]]
+os = "linux"
+

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# build: download vom serverless-repo, extract 'job-template' directory to "target directory", pip install von reqirements.txt
+
+# Build script for planqk specific Buildpack
+# Autuhor: Robert Brennenstuhl
+# Version 0.1
+# Created 16.01.2024
+
+set -eo pipefail
+
+echo "---> planqk Buildpack "
+
+
+
+#1. Create the layer directory
+serverless_template_layer="CNB_LAYERS_DIR/serverless_template"
+mkdir -p "${serverless_template_layer}"
+
+#2 pulling serverless template
+echo "copy the serverless_template directory"
+# serverles_template_url=https://gitlab.com/StoneOne/planqk/serverless-template
+apt-get update
+apt-get install -y git
+
+git clone https://gitlab.com/StoneOne/planqk/serverless-template "$serverless_template_layer"
+
+cd "$serverless_template_layer"

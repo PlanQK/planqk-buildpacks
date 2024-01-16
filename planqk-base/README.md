@@ -5,6 +5,7 @@ A builder based on Ubuntu 22.04 base image with buildpacks for Python and the Pl
 ## Buildpacks
 
 * Python: [gcr.io/paketo-buildpacks/python](https://github.com/paketo-buildpacks/python)
+* Procfile [gcr.io/paketo-buildpacks/procfile](https://github.com/paketo-buildpacks/procfile)
 
 ## Stack
 

@@ -11,4 +11,8 @@
 
 ```bash
 pack build testapp --builder planqk-base --buildpack planqk-buildpack-job-template --env BP_GITLAB_TOKEN=<your token value>
+
+# or
+
+pack build testapp --builder planqk-base --buildpack ../../job-template-buildpack --env BP_GITLAB_TOKEN=<your token value>
 ```

@@ -14,11 +14,14 @@ echo "---> PlanQK Job Template Buildpack "
 [[ -z "$BP_GITLAB_TOKEN" ]] && echo "Variable BP_GITLAB_TOKEN must be set" && exit 1
 
 # create the layer directory
-serverless_template_layer="${CNB_LAYERS_DIR}/serverless_template"
+serverless_template_layer="${CNB_LAYERS_DIR}/job-template"
 mkdir -p ${serverless_template_layer}
 
 # clone the serverless template repo
-git clone https://oauth2:${BP_GITLAB_TOKEN}@gitlab.com/StoneOne/planqk/serverless-template "$serverless_template_layer"
+git clone https://oauth2:${BP_GITLAB_TOKEN}@gitlab.com/StoneOne/planqk/serverless-template.git "$serverless_template_layer"
+
+# make layer available
+echo -e '[types]\nlaunch = true' > "${CNB_LAYERS_DIR}/job-template.toml"
 
 
 # if [[ -f "requirements.txt" ]]; then
@@ -30,9 +33,9 @@ git clone https://oauth2:${BP_GITLAB_TOKEN}@gitlab.com/StoneOne/planqk/serverles
 
 
 # set default start command
-cat <<\EOF > "${CNB_LAYERS_DIR}/launch.toml"
+cat <<EOF > "${CNB_LAYERS_DIR}/launch.toml"
 [[processes]]
 type = "web"
-command = "ENTRY_POINT=src.program:run PYTHONPATH=${CNB_LAYERS_DIR}/serverless_template/job-template python3 -m app"
+command = ["ENTRY_POINT=src.program:run PYTHONPATH=$serverless_template_layer/job-template python3 -m app"]
 default = true
 EOF

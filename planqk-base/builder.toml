@@ -1,25 +1,15 @@
-description = "Ubuntu 22.04 base image with buildpacks for Python, Procfile and the PlanQK Platform"
+description = "PlanQK Builder (Ubuntu 22.04)"
 
 
 [[buildpacks]]
-uri = "docker://gcr.io/paketo-buildpacks/python:2.9.0"
-version = "2.9.0"
-
-[[buildpacks]]
-  uri = "docker://gcr.io/paketo-buildpacks/procfile:5.6.4"
-  version = "5.6.4"
+uri = "docker://gcr.io/paketo-buildpacks/python:2.14.0"
+version = "2.14.0"
 
 
 [[order]]
-    
     [[order.group]]
     id = "paketo-buildpacks/python"
 
-[[order]]
-
-  [[order.group]]
-    id = "paketo-buildpacks/procfile"
-    version = "5.6.4"
 
 [stack]
 id = "io.buildpacks.stacks.jammy"

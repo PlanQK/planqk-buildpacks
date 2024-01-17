@@ -11,6 +11,7 @@ set -eo pipefail
 
 echo "---> planqk Buildpack "
 
+[[ -z "$BP_GITLAB_TOKEN" ]] && echo "Variable BP_GITLAB_TOKEN must be set" && exit 1
 
 
 #1. Create the layer directory
@@ -23,7 +24,7 @@ echo "copy the serverless_template directory"
 apt-get update
 apt-get install -y git
 
-git clone https://gitlab.com/StoneOne/planqk/serverless-template "$serverless_template_layer"
+git clone https://oauth2:${BP_GITLAB_TOKEN}@gitlab.com/StoneOne/planqk/serverless-template "$serverless_template_layer"
 
 cd "$serverless_template_layer"
 

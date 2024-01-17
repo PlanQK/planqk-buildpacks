@@ -10,5 +10,5 @@
 ## Packaging
 
 ```bash
-pack build testapp --builder planqk-base --buildpack planqk-buildpack-job-template
+pack build testapp --builder planqk-base --buildpack planqk-buildpack-job-template --env BP_GITLAB_TOKEN=<your token value>
 ```

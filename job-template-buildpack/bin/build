@@ -9,42 +9,30 @@
 
 set -eo pipefail
 
-echo "---> planqk Buildpack "
+echo "---> PlanQK Job Template Buildpack "
 
 [[ -z "$BP_GITLAB_TOKEN" ]] && echo "Variable BP_GITLAB_TOKEN must be set" && exit 1
 
+# create the layer directory
+serverless_template_layer="${CNB_LAYERS_DIR}/serverless_template"
+mkdir -p ${serverless_template_layer}
 
-#1. Create the layer directory
-serverless_template_layer="CNB_LAYERS_DIR/serverless_template"
-mkdir -p "${serverless_template_layer}"
-
-#2 pulling serverless template
-echo "copy the serverless_template directory"
-# serverles_template_url=https://gitlab.com/StoneOne/planqk/serverless-template
-apt-get update
-apt-get install -y git
-
+# clone the serverless template repo
 git clone https://oauth2:${BP_GITLAB_TOKEN}@gitlab.com/StoneOne/planqk/serverless-template "$serverless_template_layer"
 
-cd "$serverless_template_layer"
+
+# if [[ -f "requirements.txt" ]]; then
+#   echo "Installing Python packages from requirements.txt..."
+#   pip install -r requirements.txt
+# else
+#   echo "No requirements.txt found."
+# fi
 
 
-# copying the code into the directory is suspended for local testing.
-# kopiere den user_code in das directory
-# gehe in das user_code directory
-cd user_code
-
-#!/bin/bash
-
-if [[ -f "requirements.txt" ]]; then
-  echo "Installing Python packages from requirements.txt..."
-  pip install -r requirements.txt
-else
-  echo "No requirements.txt found."
-fi
-
-# pip install
-# setzte Entrypoint ENTRY_POINT=src.program:run
-ENTRY_POINT=src.program:run
-# setzte PYTHONPATH=../job-template python3 -m app
-PYTHONPATH=../job-template python3 -m app
+# set default start command
+cat <<\EOF > "${CNB_LAYERS_DIR}/launch.toml"
+[[processes]]
+type = "web"
+command = "ENTRY_POINT=src.program:run PYTHONPATH=${CNB_LAYERS_DIR}/serverless_template/job-template python3 -m app"
+default = true
+EOF

@@ -13,6 +13,8 @@
 pack build testapp --builder planqk-base --buildpack planqk-buildpack-job-template --env BP_GITLAB_TOKEN=<your token value>
 
 # or
-
 pack build testapp --builder planqk-base --buildpack ../../job-template-buildpack --env BP_GITLAB_TOKEN=<your token value>
+
+# or run it together with the Python buildpack
+pack build testapp --builder planqk-base --buildpack docker://gcr.io/paketo-buildpacks/python:2.14.0 --buildpack ../../job-template-buildpack --env BP_GITLAB_TOKEN=<your token value>
 ```

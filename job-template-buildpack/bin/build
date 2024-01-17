@@ -23,19 +23,15 @@ git clone https://oauth2:${BP_GITLAB_TOKEN}@gitlab.com/StoneOne/planqk/serverles
 # make layer available
 echo -e '[types]\nlaunch = true' > "${CNB_LAYERS_DIR}/job-template.toml"
 
-
+# install python packages
 # if [[ -f "requirements.txt" ]]; then
-#   echo "Installing Python packages from requirements.txt..."
 #   pip install -r requirements.txt
-# else
-#   echo "No requirements.txt found."
 # fi
-
 
 # set default start command
 cat <<EOF > "${CNB_LAYERS_DIR}/launch.toml"
 [[processes]]
 type = "web"
-command = ["ENTRY_POINT=src.program:run PYTHONPATH=$serverless_template_layer/job-template python3 -m app"]
+command = ["python", "-m", "app"]
 default = true
 EOF

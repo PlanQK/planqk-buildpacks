@@ -14,5 +14,5 @@ version = "2.14.0"
 [stack]
 id = "io.buildpacks.stacks.jammy"
 build-image = "docker.io/paketobuildpacks/build-jammy-full"
-run-image = "index.docker.io/paketobuildpacks/run-jammy-full"
+run-image = "index.docker.io/paketobuildpacks/run-jammy-base"
 run-image-mirrors = []

@@ -1,5 +1,2 @@
-[[buildpack]]
-    id = "PlanQK_job_template_Buildpack"
-    version = "0.0.1"
-    name = "Job template Buildpack"
-    uri = "https://github.com/PlanQK/planqk-buildpacks/tree/master/job-template-buildpack"
+[buildpack]
+uri = "."

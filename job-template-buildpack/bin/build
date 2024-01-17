@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-# build: download vom serverless-repo, extract 'job-template' directory to "target directory", pip install von reqirements.txt
-
-# Build script for planqk specific Buildpack
-# Autuhor: Robert Brennenstuhl
-# Version 0.1
-# Created 16.01.2024
-
 set -eo pipefail
 
 echo "---> PlanQK Job Template Buildpack "
@@ -20,13 +13,21 @@ mkdir -p ${serverless_template_layer}
 # clone the serverless template repo
 git clone https://oauth2:${BP_GITLAB_TOKEN}@gitlab.com/StoneOne/planqk/serverless-template.git "$serverless_template_layer"
 
-# make layer available
-echo -e '[types]\nlaunch = true' > "${CNB_LAYERS_DIR}/job-template.toml"
+# expose layer
+cat <<EOF > "${CNB_LAYERS_DIR}/job-template.toml"
+[types]
+launch = true
+EOF
 
 # install python packages
 # if [[ -f "requirements.txt" ]]; then
 #   pip install -r requirements.txt
 # fi
+
+# expose environment variables
+mkdir -p ${serverless_template_layer}/env.launch
+echo -n "src.program:run" > "${serverless_template_layer}/env.launch/ENTRY_POINT"
+echo -n ":$serverless_template_layer/job-template" > "${serverless_template_layer}/env.launch/PYTHONPATH.append"
 
 # set default start command
 cat <<EOF > "${CNB_LAYERS_DIR}/launch.toml"

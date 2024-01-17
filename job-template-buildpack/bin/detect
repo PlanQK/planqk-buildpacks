@@ -9,11 +9,10 @@ set -eo pipefail
 
 # Check if planqk.json = true
 
-if [ -f "planqk.json"]; then
+if [ -f "planqk.json" ]; then
     echo "planqk.json found" 
     exit 0
 else
     echo "no planqk.json found"
-    exit 1 
+    exit 100
 fi
-

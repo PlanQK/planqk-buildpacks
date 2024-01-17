@@ -15,5 +15,4 @@ and other tools that support the Buildpacks v3 specification.
 ## Learn more about Cloud Native Buildpacks
 
 This project implements the Cloud Native Buildpacks specification.
-To read more, see Cloud Native Buildpacks project
-[documentation](https://buildpacks.io/docs/concepts).
+To read more, see Cloud Native Buildpacks project [documentation](https://buildpacks.io/docs/concepts).

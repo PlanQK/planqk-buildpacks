@@ -1,17 +1,13 @@
-api = "0.8"
+api = "0.9"
 
 [buildpack]
-    id = "PlanQK_job_template_Buildpack"
-    version = "0.0.1"
-    name = "Job template Buildpack"
-    homepage = "https://github.com/PlanQK/planqk-buildpacks/tree/master/job-template-buildpack"
+id = "planqk-buildpacks/job-template"
+version = "0.0.1"
+name = "PlanQK Job Template Buildpack"
+homepage = "https://github.com/PlanQK/planqk-buildpacks"
 
 [[targets]]
 os = "linux"
 
 [[stacks]]
-id = "io.buildpacks.stacks.jammy"
-build-image = "docker.io/paketobuildpacks/build-jammy-full"
-run-image = "index.docker.io/paketobuildpacks/run-jammy-full"
-run-image-mirrors = []
-
+id = "*"

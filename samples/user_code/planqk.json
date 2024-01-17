@@ -1,0 +1,9 @@
+{
+  "name": "silly-bat-2vbkd",
+  "description": "",
+  "resources": {
+    "cpu": 1,
+    "memory": 1
+  },
+  "runtime": "PYTHON_TEMPLATE"
+}

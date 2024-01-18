@@ -6,8 +6,8 @@ uri = "docker://gcr.io/paketo-buildpacks/python:2.14.0"
 version = "2.14.0"
 
 [[buildpacks]]
-
-uri = "./planqk-buildpacks/job-template-buildpack"
+uri = "planqk-buildpack-job-template"
+version = "0.0.1"
 
 
 [[order]]
@@ -16,6 +16,7 @@ uri = "./planqk-buildpacks/job-template-buildpack"
 
     [[order.group]]
     id = "planqk-buildpacks/job-template"
+
 
 [stack]
 id = "io.buildpacks.stacks.jammy"

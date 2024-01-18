@@ -6,7 +6,7 @@ uri = "docker://gcr.io/paketo-buildpacks/python:2.14.0"
 version = "2.14.0"
 
 [[buildpacks]]
-uri = "planqk-buildpack-job-template"
+uri = "docker://planqk-buildpack-job-template"
 version = "0.0.1"
 
 

@@ -3,7 +3,16 @@
 
 The Buildpack allows PlanQK coding projects to be packaged into Docker images to run on the PlanQK Platform.
 This buildpack must be present in a Builder together with the Python Buildpack.
-In this case the Builpack/python from Paketo was used.
+In this case the Buildpack/python from Paketo was used.
+
+
+## Configuraton
+
+Environment variable | Description 
+  -----------------  | -----------
+$BP_GITLAB_TOKEN     | Sets a Gitlab token so that the required repsitory can be downloaded
+
+
 
 ## Behavior
 
@@ -18,7 +27,7 @@ This buildpack will participate if all of the following conditions are met:
 Every project that is to run on the PlanQK Platform must be provided with a program.py.
 A run method must be implemented in this program.py.
 A wrapper is therefore required to start the runtime.
-This wrapper is called "job-template" on the PlanQk Platform
+This wrapper is called "job-template" on the PlanQk Platform and will start the run method.
 This Buildpack was created to integrate the job-template into the build process of the Builder.
 
 The Buildpack will do the following:  
@@ -26,7 +35,7 @@ The Buildpack will do the following:
 The detect phase checks whether the project contains a planqk.json in the root directory.
 If no planqk.json is present, the build process is terminated with the error message: "Could not find 'planqk.json' file".
 Otherwise the build process is started.
-The build process starts by reading the environment variable for a Gitlab token.  <!--- must talk about this token earlier --->
+The build process starts by reading the environment variable for a Gitlab token. 
 Then a layer is created and the job-template repository is copied into this layer with the help of the token.
 The $ENTRY_POINT and the $PYTHONPATH are then exposed.
 ```bash
@@ -85,15 +94,9 @@ uri = path/to_the_local_job_template_buildpack.toml
     id = "planqk-buildpacks/job-template"
 
 ```
-This example shows a builder.toml from which a Builder is generated consisting of the Python Buildpack and a costum Buildpack.
-Note for Windows users:
+This example shows a builder.toml from which a Builder is generated consisting of the Python Buildpack and a costum Buildpack.  
+  
+Note for Windows users:  
+be sure to use double "\\" in the uri 
 
-be sure to use double "\" in the uri 
-
-
-## Configuraton
-
-Environment variable | Description 
-  -----------------  | -----------
-$BP_GITLAB_TOKEN     | Sets a Gitlab token so that the required repsitory can be downloaded
 

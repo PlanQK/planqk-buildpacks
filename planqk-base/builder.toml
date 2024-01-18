@@ -5,11 +5,17 @@ description = "PlanQK Builder (Ubuntu 22.04)"
 uri = "docker://gcr.io/paketo-buildpacks/python:2.14.0"
 version = "2.14.0"
 
+[[buildpacks]]
+
+uri = "./planqk-buildpacks/job-template-buildpack"
+
 
 [[order]]
     [[order.group]]
     id = "paketo-buildpacks/python"
 
+    [[order.group]]
+    id = "planqk-buildpacks/job-template"
 
 [stack]
 id = "io.buildpacks.stacks.jammy"

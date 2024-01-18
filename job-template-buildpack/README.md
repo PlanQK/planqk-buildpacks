@@ -3,6 +3,7 @@
 
 The Buildpack allows PlanQK coding projects to be packaged into Docker images to run on the PlanQK Platform.
 This buildpack must be present in a Builder together with the Python Buildpack.
+In this case the Builpack/python from Paketo was used.
 
 ## Behavior
 
@@ -25,10 +26,30 @@ The Buildpack will do the following:
 The detect phase checks whether the project contains a planqk.json in the root directory.
 If no planqk.json is present, the build process is terminated with the error message: "Could not find 'planqk.json' file".
 Otherwise the build process is started.
+The build process starts by reading the environment variable for a Gitlab token.  <!--- must talk about this token earlier --->
+Then a layer is created and the job-template repository is copied into this layer with the help of the token.
+The $ENTRY_POINT and the $PYTHONPATH are then exposed.
+```bash
+# expose environment variables
+mkdir -p ${serverless_template_layer}/env.launch
+echo -n "src.program:run" > "${serverless_template_layer}/env.launch/ENTRY_POINT"
+echo -n ":$serverless_template_layer/job-template" > "${serverless_template_layer}/env.launch/PYTHONPATH.append"
 
+```
+Finally, the start command is defined.
+```bash
+# set default start command
+cat <<EOF > "${CNB_LAYERS_DIR}/launch.toml"
+[[processes]]
+type = "web"
+command = ["python", "-m", "app"]
+default = true
+EOF
 
+```
 
-The Buildpack integrates the user service into the job template and installs the necessary requirements from a requirements.txt file.
+With these settings, the Buildpack/Procfile package can no longer be supported. 
+This would overwrite the variables stored in the build script.
 
 
 ## Builpack packaging

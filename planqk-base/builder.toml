@@ -1,18 +1,175 @@
 description = "PlanQK Builder (Ubuntu 22.04)"
 
+# rebuilding the python Buildpack without Procfile
 
 [[buildpacks]]
-uri = "docker://gcr.io/paketo-buildpacks/python:2.14.0"
-version = "2.14.0"
+uri = "gcr.io/paketo-buildpacks/cpython"
+version = "1.11.0"
+
+[[buildpacks]]
+uri = "gcr.io/paketo-buildpacks/pipenv"
+version = "1.20.0"
+
+[[buildpacks]]
+uri = "gcr.io/paketo-buildpacks/pipenv-install"
+version = "0.6.19"
+
+[[buildpacks]]
+uri = "gcr.io/paketo-buildpacks/pip"
+version = "0.20.0"
+
+[[buildpacks]]
+uri = "gcr.io/paketo-buildpacks/pip-install"
+version = "0.6.1"
+
+[[buildpacks]]
+uri = "gcr.io/paketo-buildpacks/miniconda"
+version = "0.9.0"
+
+[[buildpacks]]
+uri = "gcr.io/paketo-buildpacks/conda-env-update"
+version = "0.7.13"
+
+[[buildpacks]]
+uri = "gcr.io/paketo-buildpacks/python-start"
+version = "0.14.15"
+
+[[buildpacks]]
+uri = "gcr.io/paketo-buildpacks/ca-certificates"
+version = "3.6.7"
+
+[[buildpacks]]
+uri = "gcr.io/paketo-buildpacks/environment-variables"
+version = "4.5.6"
+
+[[buildpacks]]
+uri = "gcr.io/paketo-buildpacks/image-labels"
+version = "4.5.5"
+
+[[buildpacks]]
+uri = "gcr.io/paketo-buildpacks/watchexec"
+version = "2.8.7"
+
+
 
 [[buildpacks]]
 uri = "docker://planqk-buildpack-job-template"
 version = "0.0.1"
 
-
+# pipenv order
 [[order]]
+    # [[order.group]]
+    # id = "paketo-buildpacks/python"
+
     [[order.group]]
-    id = "paketo-buildpacks/python"
+    id = "paketo-buildpacks/ca-certificates"
+    optional = true
+    version = "3.6.7"
+
+      [[order.group]]
+    id = "paketo-buildpacks/watchexec"
+    optional = true
+    version = "2.8.7"
+
+    [[order.group]]
+    id = "paketo-buildpacks/cpython"
+    version = "1.11.0"
+
+      [[order.group]]
+    id = "paketo-buildpacks/pip"
+    version = "0.20.0"
+
+  [[order.group]]
+    id = "paketo-buildpacks/pipenv"
+    version = "1.20.0"
+
+  [[order.group]]
+    id = "paketo-buildpacks/pipenv-install"
+    version = "0.6.19"
+
+  [[order.group]]
+    id = "paketo-buildpacks/python-start"
+    version = "0.14.15"
+
+    [[order.group]]
+    id = "planqk-buildpacks/job-template"
+
+# pip order
+[[order]]
+ [[order.group]]
+    id = "paketo-buildpacks/ca-certificates"
+    optional = true
+    version = "3.6.7"
+
+  [[order.group]]
+    id = "paketo-buildpacks/watchexec"
+    optional = true
+    version = "2.8.7"
+
+  [[order.group]]
+    id = "paketo-buildpacks/cpython"
+    version = "1.11.0"
+
+  [[order.group]]
+    id = "paketo-buildpacks/pip"
+    version = "0.20.0"
+
+  [[order.group]]
+    id = "paketo-buildpacks/pip-install"
+    version = "0.6.1"
+
+  [[order.group]]
+    id = "paketo-buildpacks/python-start"
+    version = "0.14.15"
+
+  [[order.group]]
+    id = "paketo-buildpacks/environment-variables"
+    optional = true
+    version = "4.5.6"
+
+  [[order.group]]
+    id = "paketo-buildpacks/image-labels"
+    optional = true
+    version = "4.5.5"
+
+    [[order.group]]
+    id = "planqk-buildpacks/job-template"
+
+
+# conda order
+[[order]]
+
+     [[order.group]]
+    id = "paketo-buildpacks/ca-certificates"
+    optional = true
+    version = "3.6.7"
+
+  [[order.group]]
+    id = "paketo-buildpacks/watchexec"
+    optional = true
+    version = "2.8.7"
+
+  [[order.group]]
+    id = "paketo-buildpacks/miniconda"
+    version = "0.9.0"
+
+  [[order.group]]
+    id = "paketo-buildpacks/conda-env-update"
+    version = "0.7.13"
+
+  [[order.group]]
+    id = "paketo-buildpacks/python-start"
+    version = "0.14.15"
+
+  [[order.group]]
+    id = "paketo-buildpacks/environment-variables"
+    optional = true
+    version = "4.5.6"
+
+  [[order.group]]
+    id = "paketo-buildpacks/image-labels"
+    optional = true
+    version = "4.5.5"
 
     [[order.group]]
     id = "planqk-buildpacks/job-template"
